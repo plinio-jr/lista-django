@@ -3,6 +3,6 @@ from django.db import models
 
 
 class Usuario(AbstractUser):
-    cpf = models.CharField(max_length=11, unique=True)
-    telefone = models.CharField(max_length=11, blank=True, null=True)
-    data_nascimento = models.DateField(blank=True, null=True)
+    nome = models.CharField(max_length=50, unique=True)
+    sobrenome = models.CharField(max_length=100, blank=True, null=True)
+    email = models.DateField(max_length=200)

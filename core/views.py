@@ -118,3 +118,40 @@ class ProdutoViewSet(ModelViewSet):
     serializer_class = ProdutoSerializer
     permission_classes = [IsAuthenticated]
 
+@method_decorator(csrf_exempt, name="dispatch")
+class ProdutoViewSet(ModelViewSet):
+    queryset = Produto.objects.all()
+    serializer_class = ProdutoSerializer
+
+    def get(self, request, id=None):
+        if id: 
+            qs= Produto.objects.get(id=id)
+            data = {}
+            data['id'] = qs.id
+            data['descricao'] = qs.descricao
+            return JsonResponse(data)
+        else:
+            data = list(Produto.objects.values())
+            formatted_data = json.dumps(data, ensure_ascii=False)
+            return HTTPResponse(formatted_data, content_type="application/json")
+
+    def post(self, request): 
+        json_data = json.loads(request.data)
+        novo_produto = Produto.objects.create(**json_data)
+        data = {"id": novo_produto.id, "nome": novo_produto.nome}
+        return JsonResponse(data)
+
+    def patch(self, request, id):
+        json_data = json.loads(request.body)
+        qs = Produto.objects.get(id=id)
+        qs.nome = json_data['nome'] #if 'descricao' in json_data else qs.descricao#
+        qs.save()
+        data = {}
+        data ['id'] = qs.id
+        data['nome']= qs.nome
+        return JsonResponse(data)
+
+    def delete(self, request, id):
+        qs = Produto.objects.get(id=id)
+        qs.delete()
+        data = {'mensagem': "Item excluido com sucesso"}
