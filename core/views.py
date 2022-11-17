@@ -17,7 +17,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from core import models, serializers
-from core.models import Lista, Mercado, Produto
+from core.models import Lista, Mercado, Produto, Usuario
 from core.serializers import ListaSerializer, MercadoSerializer, ProdutoSerializer
 
 
@@ -86,7 +86,7 @@ class ListaDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, id):
-        categoria = get_object_or_404(Lista.objects.all(), id=id)
+        Lista = get_object_or_404(Lista.objects.all(), id=id)
         serializer = ListaSerializer(Lista, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -111,12 +111,12 @@ class ListaDetailGeneric(RetrieveDestroyAPIView):
 class MercadoViewSet(ModelViewSet):
     queryset = Mercado.objects.all()
     serializer_class = MercadoSerializer
-    permission_classes = [IsAuthenticated]
+  
 
 class ProdutoViewSet(ModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
-    permission_classes = [IsAuthenticated]
+   
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ProdutoViewSet(ModelViewSet):
