@@ -31,6 +31,7 @@ router.register(r"produtos", ProdutoViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include(router.urls)),
+    path('accounts/', include('allauth.urls')),
     path('listas/<int:id>', views.Lista),
     path('listas-apiview/', views.ListaList.as_view()),
     path('listas-apiview/<int:id>/', views.ListaDetail.as_view()),
